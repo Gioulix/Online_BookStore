@@ -1,6 +1,6 @@
 import { useCart } from "../context/CartContext";
 
-function NavBar({ search, setSearch, onCartClick }) {
+function NavBar({ search, setSearch, onSearchSubmit, onCartClick }) {
   const { cart, cartCount } = useCart();
 
   return (
@@ -24,6 +24,11 @@ function NavBar({ search, setSearch, onCartClick }) {
               placeholder="Search books..."
               value={search}
               onChange={(event) => setSearch(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  onSearchSubmit();
+                }
+              }}
             />
           </div>
 

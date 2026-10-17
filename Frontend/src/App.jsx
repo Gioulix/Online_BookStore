@@ -41,6 +41,7 @@ function AppContent() {
       <NavBar
         search={search}
         setSearch={setSearch}
+        onSearchSubmit={scrollToBooks}
         onCartClick={() => setCartOpen(true)}
       />
 
