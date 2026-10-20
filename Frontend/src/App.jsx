@@ -7,33 +7,51 @@ import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 import Cart from "./components/Cart";
 import BookGrid from "./components/Bookgrid";
+import CategoryPicker from "./components/CategoryPicker";
 
 import { CartProvider } from "./context/CartContext";
 
 function AppContent() {
   const [search, setSearch] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
+  const [categoryPickerOpen, setCategoryPickerOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const categories = useMemo(
+    () => [...new Set(books.map((book) => book.category))].sort(),
+    [],
+  );
 
   const filteredBooks = useMemo(() => {
     const query = search.toLowerCase().trim();
 
-    if (!query) {
-      return books;
-    }
-
     return books.filter((book) => {
-      return (
+      const matchesSearch =
+        !query ||
         book.title.toLowerCase().includes(query) ||
         book.author.toLowerCase().includes(query) ||
-        book.category.toLowerCase().includes(query)
-      );
+        book.category.toLowerCase().includes(query);
+      const matchesCategory =
+        !selectedCategory || book.category === selectedCategory;
+
+      return matchesSearch && matchesCategory;
     });
-  }, [search]);
+  }, [search, selectedCategory]);
 
   const scrollToBooks = () => {
     document.getElementById("books")?.scrollIntoView({
       behavior: "smooth",
     });
+  };
+
+  const selectCategory = (category) => {
+    setSelectedCategory(category);
+    setCategoryPickerOpen(false);
+    scrollToBooks();
+  };
+
+  const showAllBooks = () => {
+    setSelectedCategory(null);
+    setSearch("");
   };
 
   return (
@@ -43,12 +61,20 @@ function AppContent() {
         setSearch={setSearch}
         onSearchSubmit={scrollToBooks}
         onCartClick={() => setCartOpen(true)}
+        onCategoriesClick={() => setCategoryPickerOpen(true)}
       />
 
       <main>
-        <Hero onBrowseClick={scrollToBooks} />
+        <Hero
+          onBrowseClick={scrollToBooks}
+          onCategoriesClick={() => setCategoryPickerOpen(true)}
+        />
 
-        <BookGrid books={filteredBooks} />
+        <BookGrid
+          books={filteredBooks}
+          selectedCategory={selectedCategory}
+          onViewAll={showAllBooks}
+        />
 
         <section className="newsletter">
           <div>
@@ -78,9 +104,17 @@ function AppContent() {
         </section>
       </main>
 
-      <Footer />
+      <Footer categories={categories} onCategorySelect={selectCategory} />
 
       {cartOpen && <Cart onClose={() => setCartOpen(false)} />}
+      {categoryPickerOpen && (
+        <CategoryPicker
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelect={selectCategory}
+          onClose={() => setCategoryPickerOpen(false)}
+        />
+      )}
     </div>
   );
 }

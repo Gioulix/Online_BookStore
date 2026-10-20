@@ -1,16 +1,20 @@
 import BookCard from "./Bookcard";
 
-function BookGrid({ books }) {
+function BookGrid({ books, selectedCategory, onViewAll }) {
   return (
     <section className="books-section" id="books">
       <div className="section-heading">
         <div>
           <span className="section-label">OUR COLLECTION</span>
 
-          <h2>Popular books</h2>
+          <h2>
+            {selectedCategory ? `${selectedCategory} books` : "Popular books"}
+          </h2>
         </div>
 
-        <button className="view-all-button">View all</button>
+        <button className="view-all-button" onClick={onViewAll}>
+          View all
+        </button>
       </div>
 
       {books.length > 0 ? (

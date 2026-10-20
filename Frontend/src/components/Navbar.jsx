@@ -1,6 +1,12 @@
 import { useCart } from "../context/CartContext";
 
-function NavBar({ search, setSearch, onSearchSubmit, onCartClick }) {
+function NavBar({
+  search,
+  setSearch,
+  onSearchSubmit,
+  onCartClick,
+  onCategoriesClick,
+}) {
   const { cart, cartCount } = useCart();
 
   return (
@@ -13,11 +19,20 @@ function NavBar({ search, setSearch, onSearchSubmit, onCartClick }) {
         <div className="nav-links">
           <a href="#home">Home</a>
           <a href="#books">Books</a>
-          <a href="#categories">Categories</a>
+          <button className="nav-category-button" onClick={onCategoriesClick}>
+            Categories
+          </button>
           <a href="#about">About</a>
         </div>
 
         <div className="nav-actions">
+          <button
+            className="nav-category-trigger"
+            onClick={onCategoriesClick}
+          >
+            Categories
+          </button>
+
           <div className="search-box">
             <input
               type="text"

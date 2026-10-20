@@ -1,4 +1,4 @@
-function Footer() {
+function Footer({ categories, onCategorySelect }) {
   return (
     <footer className="footer" id="about">
       <div className="footer-content">
@@ -24,13 +24,18 @@ function Footer() {
           <a href="#books">Featured</a>
         </div>
 
-        <div className="footer-column" id="categories">
+        <div className="footer-column">
           <h4>Categories</h4>
 
-          <a href="#books">Fiction</a>
-          <a href="#books">Self Growth</a>
-          <a href="#books">History</a>
-          <a href="#books">Sci-Fi</a>
+          {categories.map((category) => (
+            <button
+              className="footer-category-button"
+              key={category}
+              onClick={() => onCategorySelect(category)}
+            >
+              {category}
+            </button>
+          ))}
         </div>
 
         <div className="footer-column">

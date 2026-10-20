@@ -1,4 +1,4 @@
-function Hero({ onBrowseClick }) {
+function Hero({ onBrowseClick, onCategoriesClick }) {
   return (
     <section className="hero" id="home">
       <div className="hero-content">
@@ -22,7 +22,7 @@ function Hero({ onBrowseClick }) {
               Browse Books
             </button>
 
-            <button className="secondary-button" onClick={onBrowseClick}>
+            <button className="secondary-button" onClick={onCategoriesClick}>
               Explore Categories
             </button>
           </div>
